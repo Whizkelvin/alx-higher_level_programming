@@ -1,118 +1,71 @@
 #!/usr/bin/python3
+# 101-square.py
+# Brennan D Baraban <375@holbertonschool.com>
+"""Define a class Square."""
 
 
-class Node:
-    """
-    Node class for a singly linked list
-    """
-    def __init__(self, data, next_node=None):
-        """
-        initialization called when instance of class created
-        """
-        if self.__validate_data(data):
-            self.__data = data
-        if self.__validate_node(next_node):
-            self.__next_node = next_node
+class Square:
+    """Represent a square."""
 
-    @property
-    def data(self):
+    def __init__(self, size=0, position=(0, 0)):
+        """Initialize a new square.
+        Args:
+            size (int): The size of the new square.
+            position (int, int): The position of the new square.
         """
-        get the data attribute
-        """
-        return self.__data
-
-    @data.setter
-    def data(self, value):
-        """
-        set the data attribute
-        """
-        if self.__validate_data(value):
-            self.__data = value
+        self.size = size
+        self.position = position
 
     @property
-    def next_node(self):
-        """
-        get the node attribute
-        """
-        return self.__next_node
+    def size(self):
+        """Get/set the current size of the square."""
+        return (self.__size)
 
-    @next_node.setter
-    def next_node(self, value):
-        """
-        set the node attribute
-        """
-        if self.__validate_node(value):
-            self.__next_node = value
+    @size.setter
+    def size(self, value):
+        if not isinstance(value, int):
+            raise TypeError("size must be an integer")
+        elif value < 0:
+            raise ValueError("size must be >= 0")
+        self.__size = value
 
-    def __validate_data(self, data):
-        """
-        validates the data, checking its type
-        Returns true or false if valid or not respectively
-        """
-        if isinstance(data, int):
-            return True
-        return False
+    @property
+    def position(self):
+        """Get/set the current position of the square."""
+        return (self.__position)
 
-    def __validate_node(self, node):
-        """
-        validates the node, checking it's a node object
-        Returns true or false if valid or not respectively
-        """
-        if isinstance(node, Node) or node is None:
-            return True
-        return False
+    @position.setter
+    def position(self, value):
+        if (not isinstance(value, tuple) or
+                len(value) != 2 or
+                not all(isinstance(num, int) for num in value) or
+                not all(num >= 0 for num in value)):
+            raise TypeError("position must be a tuple of 2 positive integers")
+        self.__position = value
 
+    def area(self):
+        """Return the current area of the square."""
+        return (self.__size * self.__size)
 
-class SinglyLinkedList:
-    """
-    contains nodes for a singly linked list and methods for ->
-    insertion
-    """
-    def __init__(self):
-        """
-        initialization called when instance of class created
-        """
-        self.__head = None
-
-    def __str__(self):
-        """
-        used by print to print linked list
-        """
-        tmp = self.__head
-        string = ""
-        while tmp is not None:
-            string += str(tmp.data)
-            tmp = tmp.next_node
-            if tmp is not None:
-                string += '\n'
-        return string
-
-    def sorted_insert(self, value):
-        """
-        inserts a new Node into the correct sorted position
-                                            (based on data)
-        """
-        tmp = self.__head
-        if tmp is None:
-            self.__head = Node(value)
+    def my_print(self):
+        """Print the square with the # character."""
+        if self.__size == 0:
+            print("")
             return
 
-        prev = None
-        while tmp is not None:
-            if (tmp.next_node is None or tmp.next_node.data >= value):
-                if (tmp.data >= value):
-                    next_n = tmp
-                    tmp = Node(value)
-                    tmp.next_node = next_n
-                    if prev is not None:
-                        prev.next_node = tmp
-                    else:
-                        self.__head = tmp
-                else:
-                    next_n = tmp.next_node
-                    tmp.next_node = Node(value)
-                    tmp.next_node.next_node = next_n
-                return
+        [print("") for i in range(0, self.__position[1])]
+        for i in range(0, self.__size):
+            [print(" ", end="") for j in range(0, self.__position[0])]
+            [print("#", end="") for k in range(0, self.__size)]
+            print("")
 
-            prev = tmp
-            tmp = tmp.next_node
+    def __str__(self):
+        """Define the print() representation of a Square."""
+        if self.__size != 0:
+            [print("") for i in range(0, self.__position[1])]
+        for i in range(0, self.__size):
+            [print(" ", end="") for j in range(0, self.__position[0])]
+            [print("#", end="") for k in range(0, self.__size)]
+            if i != self.__size - 1:
+                print("")
+        return ("")
